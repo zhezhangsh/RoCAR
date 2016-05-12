@@ -11,8 +11,9 @@ DownloadFile<-function(url, path, check.existence=TRUE) {
   
   if (file.exists(url)) { # actually a local file
     f0<-TrimPath(url); 
-    fn<-paste(path, fn, sep='/')
+    fn<-paste(path, f0, sep='/')
     file.copy(f0, fn); 
+    fn; 
   } else {
     if (check.existence & !url.exists(url)) url else {
       if (!dir.exists(path)) dir.create(path, recursive = TRUE);
