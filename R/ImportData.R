@@ -1,4 +1,5 @@
-# Import a table-like data object saved within a file in one of various supported formats
+# Import a table-like data object saved within a file in one of various supported formats:
+# .txt, .tab, .csv, .bed, .xlsx, .xls, .html, .rdata, .rda, .rds
 # The format of the data will be determined based on the file name extension
 ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TRUE) {
   # fn          Name of the file to be imported
