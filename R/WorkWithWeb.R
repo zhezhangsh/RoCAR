@@ -10,9 +10,8 @@ DownloadFile<-function(url, path, check.existence=TRUE) {
   require(RoCA);
   
   if (file.exists(url)) { # actually a local file
-    f0<-TrimPath(url); 
-    fn<-paste(path, f0, sep='/')
-    file.copy(f0, fn, overwrite = TRUE); 
+    fn<-paste(path, TrimPath(url), sep='/')
+    file.copy(url, fn, overwrite = TRUE); 
     fn; 
   } else {
     if (check.existence & !url.exists(url)) url else {
