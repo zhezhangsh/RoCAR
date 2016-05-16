@@ -22,14 +22,18 @@ ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TR
   } else if (ext == 'txt' | ext == 'tab' | ext == 'bed') {
     
     if (is.na(sep[1])) sep <- '\t' else sep <- sep[1];
-    if (rownames) d <- read.table(fn, sep=sep, header=colnames, row.names=1, stringsAsFactors=FALSE) else
-      d <- read.table(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
+    if (rownames) {
+      d <- read.table(fn, sep=sep, header=colnames, row.names=1, stringsAsFactors=FALSE);
+      colnames(d) <- strsplit(readLines(fn, n=1), sep)[[1]]; 
+    } else  d <- read.table(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
     
   } else if (ext == 'csv') {
     
     if (is.na(sep[1])) sep <- ',' else sep <- sep[1];
-    if (rownames) d <- read.csv(fn, sep=sep, header=colnames, row.names=1, stringsAsFactors=FALSE) else
-      d <- read.csv(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
+    if (rownames) {
+      d <- read.csv(fn, sep=sep, header=colnames, row.names=1, stringsAsFactors=FALSE);
+      colnames(d) <- strsplit(readLines(fn, n=1), sep)[[1]]; 
+    } else d <- read.csv(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
     
   } else if (ext == 'xlsx' | ext == 'xls') {
     
