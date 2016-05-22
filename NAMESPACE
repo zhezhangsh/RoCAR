@@ -4,6 +4,7 @@ export("CreateReport");
 export("DownloadFile"); 
 export("GenerateFolder");
 export("Link2Home");
+export("LoadPackage"); 
 export("ImportList");
 export("ImportR");
 export("ImportTable");
