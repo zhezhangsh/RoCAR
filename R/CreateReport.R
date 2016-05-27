@@ -28,9 +28,9 @@ CreateReport<-function(yml) {
   fn.md<-paste(RemoveExtension(fn.tmpl), '.md', sep='');
   
   if (url.exists(path.tmpl)) download.file(path.tmpl, fn.tmpl) else 
-    if (file.exists(path.tmpl)) file.copy(path.tmpl, fn.tmpl, overwrite = TRUE) else 
+    if (file.exists(path.tmpl))if (!identical(path.tmpl, fn.tmpl)) file.copy(path.tmpl, fn.tmpl, overwrite = TRUE) else 
       stop('Rmarkdown template file: ', path.tmpl, ' not found\n'); 
-  if (is.na(fn.yml)) writeLines(as.yaml(yml), fn.yaml) else file.copy(fn.yml, fn.yaml, overwrite = TRUE);
+  if (is.na(fn.yml)) writeLines(as.yaml(yml), fn.yaml) else if (!identical(fn.yml, fn.yaml)) file.copy(fn.yml, fn.yaml, overwrite = TRUE);
   if (file.exists(fn.md)) file.remove(fn.md); 
   #################################################################################################################
   
