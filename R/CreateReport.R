@@ -28,11 +28,18 @@ CreateReport<-function(yml) {
   fn.md<-paste(RemoveExtension(fn.tmpl), '.md', sep='');
   
   if (url.exists(path.tmpl)) download.file(path.tmpl, fn.tmpl, method='curl') else 
-    if (file.exists(path.tmpl)) 
-      if (!identical(path.tmpl, fn.tmpl) & !identical(paste(getwd(), 'path.tmpl', sep='/'), fn.tmpl)) file.copy(path.tmpl, fn.tmpl, overwrite = TRUE) else 
-        stop('Rmarkdown template file: ', path.tmpl, ' not found\n'); 
-  if (is.na(fn.yml)) writeLines(as.yaml(yml), fn.yaml) else 
-    if (!identical(fn.yml, fn.yaml) & !identical(paste(getwd(), 'fn.yml', sep='/'), fn.yaml)) file.copy(fn.yml, fn.yaml, overwrite = TRUE);
+    if (file.exists(path.tmpl)) { # Copy Rmd template to destination folder
+      fn.tmpl.tmp <- paste(fn.tmpl, '.tmp', sep=''); 
+      file.copy(path.tmpl, fn.tmpl.tmp, overwrite = TRUE); 
+      file.copy(fn.tmpl.tmp, fn.tmpl, overwrite = TRUE);
+      file.remove(fn.tmpl.tmp); 
+    } else stop('Rmarkdown template file: ', path.tmpl, ' not found\n'); 
+  if (is.na(fn.yml)) writeLines(as.yaml(yml), fn.yaml) else {
+    fn.yaml.tmp <- paste(fn.yaml, '.tmp', sep=''); 
+    file.copy(fn.yml, fn.yaml.tmp, overwrite = TRUE);
+    file.copy(fn.yaml.tmp, fn.yaml, overwrite = TRUE);
+    file.remove(fn.yaml.tmp); 
+  }; 
   if (file.exists(fn.md)) file.remove(fn.md); 
   #################################################################################################################
   
