@@ -12,7 +12,7 @@ DownloadFile<-function(url, path, check.existence=TRUE) {
   if (file.exists(url)) { # actually a local file
     fn <- paste(path, TrimPath(url), sep='/')
     fn.tmp <- paste(fn, '.tmp', sep=''); 
-    if file.exists(fn.tmp) file.remove(fn.tmp); 
+    if (file.exists(fn.tmp)) file.remove(fn.tmp); 
     file.copy(url, fn.tmp, overwrite = TRUE); 
     file.rename(fn.tmp, fn); 
     fn; 
