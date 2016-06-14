@@ -5,11 +5,11 @@ Convert2FullPath<-function(fns) {
   require(RCurl);
   
   cnvrt.file<-function(fn) { # helper function
-    if (url.exists(fn)) fn else {
-      f<-c(paste(getwd(), fn, sep='/'), fn); 
-      f<-f[file.exists(f)][1]; 
-      if (is.na(f)) stop('File of input data not found: ', fn, '\n'); 
-      f; 
+    f<-c(paste(getwd(), fn, sep='/'), fn); 
+    f<-f[file.exists(f)];
+    
+    if (length(f) > 0) f[1] else {
+      if (url.exists(fn)) fn else stop('File of input data not found: ', fn, '\n'); 
     }
   }
   
