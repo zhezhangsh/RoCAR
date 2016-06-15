@@ -77,6 +77,8 @@ CreateReport<-function(yml) {
                           output_options=list('self_contained'=TRUE), quiet=TRUE, envir=new.env());                 ###
         rmarkdown::render(fn.md, output_format="html_document", output_file="index.html", output_dir=getwd(),       ###
                           quiet=TRUE, envir=new.env());                                                             ###
+        rmarkdown::render(fn.md, output_format="pdf_document", output_file="index.pdf", output_dir=getwd(),       ###
+                          quiet=TRUE, envir=new.env());                                                             ###
         ###############################################################################################################
       }, silent=TRUE);
     }
