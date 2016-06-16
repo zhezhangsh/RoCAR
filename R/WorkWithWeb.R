@@ -20,7 +20,33 @@ DownloadFile<-function(url, path, check.existence=TRUE) {
     if (check.existence & !url.exists(url)) url else {
       if (!dir.exists(path)) dir.create(path, recursive = TRUE);
       fn <- paste(path, TrimPath(url), sep='/'); 
-      download.file(url, fn); 
+      
+      done <- FALSE;
+      tryCatch({
+        download.file(url, fn); 
+        done <- TRUE;
+      }, error = function(err) {
+        cat('Downloading failed, trying different method ...\n')
+      }, finally = {}); 
+      
+      if (!done) {
+        tryCatch({
+          download.file(url, fn, method='wget'); 
+          done <- TRUE;
+        }, error = function(err) {
+          cat('Downloading failed, trying different method ...\n')
+        }, finally = {}); 
+      }
+      
+      if (!done) {
+        tryCatch({
+          download.file(url, fn, method='curl'); 
+          done <- TRUE;
+        }, error = function(err) {
+          cat('Downloading failed, trying different method ...\n')
+        }, finally = {}); 
+      }
+      
       fn; 
     }
   }
