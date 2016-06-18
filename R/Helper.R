@@ -4,7 +4,7 @@ Convert2FullPath<-function(fns) {
   # fns    File names of input files as a character vector or list
   require(RCurl);
   
-  cnvrt.file<-function(fn) { # helper function
+  cnvrt.file<-function(fn) { # helper function 
     f<-c(paste(getwd(), fn, sep='/'), fn); 
     f<-f[file.exists(f)];
     
@@ -13,10 +13,14 @@ Convert2FullPath<-function(fns) {
     }
   }
   
+  rm.null <- function(x) {
+    if (is.list(x)) lapply(x, rm.null) else if (is.null(x)) '' else x; 
+  }; 
+  
   if (is.character(fns)) {
     f<-sapply(fns, cnvrt.file)
   } else if (length(fns)>0) {
-    fn.unlist<-unlist(as.relistable(fns));
+    fn.unlist<-unlist(as.relistable(rm.null(fns)));
     fn.unlist[1:length(fn.unlist)]<-sapply(fn.unlist, cnvrt.file); 
     f<-relist(fn.unlist);
   } else f<-fns;
