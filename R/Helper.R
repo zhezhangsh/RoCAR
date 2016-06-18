@@ -5,7 +5,7 @@ Convert2FullPath<-function(fns) {
   require(RCurl);
   
   cnvrt.file<-function(fn) { # helper function 
-    if (is.null(fn)) NULL else {
+    if (is.null(fn) | identical(fn, '') | identical(fn, NA)) '' else {
       f<-c(paste(getwd(), fn, sep='/'), fn); 
       f<-f[file.exists(f)];
     
