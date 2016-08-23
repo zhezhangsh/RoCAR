@@ -19,8 +19,9 @@ ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TR
       if (class(d) == 'GRanges') {
         # Convert to BED-like format
         e <- elementMetadata(d);
-        d <- data.frame(seqname = as.vector(seqnames(d)), start=start(d), end=end(d), name=names(d), 
-                        score = rep(NA, length(d)), strand = as.vector(strand(d)), stringsAsFactors = FALSE); 
+        d <- data.frame(seqname = as.vector(seqnames(d)), start=start(d), end=end(d), strand = as.vector(strand(d)), 
+                        row.names = names(d), stringsAsFactors = FALSE); 
+        rownames(d) <- names(e); 
         if (ncol(e) > 0) d <- cbind(d, as.data.frame(e)); 
         
       } else stop('Loaded R object is in a class not convertible to a table: ', class(d), '\n');
