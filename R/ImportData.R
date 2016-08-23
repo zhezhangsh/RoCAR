@@ -15,15 +15,16 @@ ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TR
     
     if (ext == 'rds') d <- readRDS(fn) else d <- eval(parse(text = load(fn)));
     
-    if (class(d) != 'data.frame' & class(d) != 'matrix') else if (class(d) == 'GRanges') {
-      # Convert to BED-like format
-      e <- elementMetadata(d);
-      d <- data.frame(seqname = as.vector(seqnames(d)), start=start(d), end=end(d), name=names(d), 
-                      score = rep(NA, length(d)), strand = as.vector(strand(d)), stringsAsFactors = FALSE); 
-      if (ncol(e) > 0) d <- cbind(d, as.data.frame(e)); 
-      
-    } else stop('Loaded R object is in a class not convertible to a table: ', class(d), '\n');
-    
+    if (class(d) != 'data.frame' & class(d) != 'matrix') {
+      if (class(d) == 'GRanges') {
+        # Convert to BED-like format
+        e <- elementMetadata(d);
+        d <- data.frame(seqname = as.vector(seqnames(d)), start=start(d), end=end(d), name=names(d), 
+                        score = rep(NA, length(d)), strand = as.vector(strand(d)), stringsAsFactors = FALSE); 
+        if (ncol(e) > 0) d <- cbind(d, as.data.frame(e)); 
+        
+      } else stop('Loaded R object is in a class not convertible to a table: ', class(d), '\n');
+    }
   } else if (ext == 'txt' | ext == 'tab' | ext == 'bed') {
     
     if (is.na(sep[1])) sep <- '\t' else sep <- sep[1];
