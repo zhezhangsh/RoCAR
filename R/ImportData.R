@@ -32,6 +32,7 @@ ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TR
     if (rownames) {
       d <- read.table(fn, sep=sep, header=colnames, row.names=1, stringsAsFactors=FALSE);
       colnames(d)[ncol(d):1] <- rev(strsplit(readLines(fn, n=1), sep)[[1]])[1:ncol(d)]; 
+      colnames(d) <- gsub('"', '', colnames(d));
     } else  d <- read.table(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
     
   } else if (ext == 'csv') {
@@ -40,6 +41,7 @@ ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TR
     if (rownames) {
       d <- read.csv(fn, sep=sep, header=colnames, row.names=1, stringsAsFactors=FALSE);
       colnames(d)[ncol(d):1] <- rev(strsplit(readLines(fn, n=1), sep)[[1]])[1:ncol(d)]; 
+      colnames(d) <- g
     } else d <- read.csv(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
     
   } else if (ext == 'xlsx' | ext == 'xls') {
