@@ -1,5 +1,5 @@
 # Import a table-like data object saved within a file in one of various supported formats:
-# .txt, .tab, .csv, .bed, .xlsx, .xls, .html, .rdata, .rda, .rds
+# .txt, .tab, .tsv, .csv, .bed, .xlsx, .xls, .html, .rdata, .rda, .rds
 # The format of the data will be determined based on the file name extension
 ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TRUE) {
   # fn          Name of the file to be imported
@@ -34,6 +34,9 @@ ImportTable <- function(fn, rownames=TRUE, colnames=TRUE, sep=NA, ind=1, warn=TR
       colnames(d)[ncol(d):1] <- rev(strsplit(readLines(fn, n=1), sep)[[1]])[1:ncol(d)]; 
     } else  d <- read.table(fn, sep=sep, header=colnames, stringsAsFactors=FALSE); 
     
+  } else if (ext == 'tsv') {
+    if (is.na(sep[1])) sep <- '\t';
+    if (rownames) d <- read.delim(fn, sep=sep, header=colnames, row.names = 1) else d <- read.delim(fn, sep=sep, header=colnames); 
   } else if (ext == 'csv') {
     
     if (is.na(sep[1])) sep <- ',' else sep <- sep[1];
@@ -95,8 +98,8 @@ ImportList <- function(fn, rownames=TRUE, sep=NA, ind=1, warn=TRUE) {
   } else if (ext == 'txt' | ext == 'tab' | ext == 'csv') {
     
     if (is.na(sep[1])) if (ext == 'csv') sep <- ',' else sep <- '\t' else sep <- sep[1];
-    lns<-scan(fn, flush=TRUE, sep='\n', what='');
-    d<-strsplit(lns, sep);
+    lns <- scan(fn, flush=TRUE, sep='\n', what='');
+    d   <- strsplit(lns, sep);
     if (rownames) {
       names(d) <- sapply(d, function(d) d[1]); 
       d <- lapply(d, function(d) d[-1]); 
