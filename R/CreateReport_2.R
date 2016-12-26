@@ -1,5 +1,5 @@
 # Use this template to create a data analysis report based on an R markdown template
-CreatePlotlyReport<-function(yml) {
+CreateReport_2<-function(yml) {
   # yml     The yaml file or an yaml list defines the inputs and parameters of the analysis
   
   require(knitr);
@@ -27,10 +27,19 @@ CreatePlotlyReport<-function(yml) {
   fn.yaml<-paste(RemoveExtension(fn.tmpl), '.yaml', sep='');
   fn.md<-paste(RemoveExtension(fn.tmpl), '.md', sep='');
   
-  if (url.exists(path.tmpl)) download.file(path.tmpl, fn.tmpl) else 
-    if (file.exists(path.tmpl)) file.copy(path.tmpl, fn.tmpl, overwrite = TRUE) else 
-      stop('Rmarkdown template file: ', path.tmpl, ' not found\n'); 
-  if (is.na(fn.yml)) writeLines(as.yaml(yml), fn.yaml) else file.copy(fn.yml, fn.yaml, overwrite = TRUE);
+  if (url.exists(path.tmpl)) download.file(path.tmpl, fn.tmpl, method='curl') else 
+    if (file.exists(path.tmpl)) { # Copy Rmd template to destination folder
+      fn.tmpl.tmp <- paste(fn.tmpl, '.tmp', sep=''); 
+      file.copy(path.tmpl, fn.tmpl.tmp, overwrite = TRUE); 
+      file.copy(fn.tmpl.tmp, fn.tmpl, overwrite = TRUE);
+      file.remove(fn.tmpl.tmp); 
+    } else stop('Rmarkdown template file: ', path.tmpl, ' not found\n'); 
+  if (is.na(fn.yml)) writeLines(as.yaml(yml), fn.yaml) else {
+    fn.yaml.tmp <- paste(fn.yaml, '.tmp', sep=''); 
+    file.copy(fn.yml, fn.yaml.tmp, overwrite = TRUE);
+    file.copy(fn.yaml.tmp, fn.yaml, overwrite = TRUE);
+    file.remove(fn.yaml.tmp); 
+  }; 
   if (file.exists(fn.md)) file.remove(fn.md); 
   #################################################################################################################
   
@@ -45,27 +54,31 @@ CreatePlotlyReport<-function(yml) {
   
   ###########################################################################################
   tryCatch({
+
+    
     fn.tmpl<-TrimPath(fn.tmpl);
     fn.yaml<-TrimPath(fn.yaml);
     fn.md<-TrimPath(fn.md);
     
     # Run template, save error message
-#     roca.message$knit<-try(
-#       ################################
-#       knitr::knit(fn.tmpl, fn.md), ###
-#       ################################
-#     silent=TRUE);
-#     if (!identical(roca.message$knit, fn.md)) roca.message$noError<-FALSE else
-#       roca.message$knit<-paste(getwd(), roca.message$knit, sep='/'); 
+    roca.message$knit<-try(
+      ################################
+      knitr::knit(fn.tmpl, fn.md), ###
+      ################################
+    silent=TRUE);
+    if (!identical(roca.message$knit, fn.md)) roca.message$noError<-FALSE else
+      roca.message$knit<-paste(getwd(), roca.message$knit, sep='/'); 
     
     # Convert markdown file to html file
     if (roca.message$noError) {
       roca.message$render<-try({
         ###############################################################################################################
-        rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index_alone.html", output_dir=getwd(), ###
+        rmarkdown::render(fn.md, output_format="html_document", output_file="index_alone.html", output_dir=getwd(), ###
                           output_options=list('self_contained'=TRUE), quiet=TRUE, envir=new.env());                 ###
-        rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index.html", output_dir=getwd(),       ###
+        rmarkdown::render(fn.md, output_format="html_document", output_file="index.html", output_dir=getwd(),       ###
                           quiet=TRUE, envir=new.env());                                                             ###
+        #rmarkdown::render(fn.md, output_format="pdf_document", output_file="index.pdf", output_dir=getwd(),       ###
+                          #quiet=TRUE, envir=new.env());                                                             ###
         ###############################################################################################################
       }, silent=TRUE);
     }

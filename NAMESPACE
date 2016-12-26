@@ -1,7 +1,7 @@
 
 export("Convert2FullPath");
 export("CreateReport");
-export("CreatePlotlyReport");
+export("CreateReport_2");
 export("DownloadFile"); 
 export("GenerateFolder");
 export("Link2Home");
