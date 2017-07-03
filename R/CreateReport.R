@@ -64,7 +64,6 @@ CreateReport<-function(yml) {
         ###############################################################################################################
         rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index.html", output_dir=getwd(),       ###
                           quiet=TRUE, envir=new.env());       
-        pandoc_self_contained_html('index.html', 'index_alone.html'); 
         
         ###
         # rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index_alone.html", output_dir=getwd(), ###
@@ -91,6 +90,7 @@ CreateReport<-function(yml) {
     roca.message$noError<-FALSE;
     roca.message$other<-err;
   }, finally = {
+    if (file.exists('index.html')) pandoc_self_contained_html('index.html', 'index_alone.html'); 
     setwd(owd);
   }); 
   ###########################################################################################
