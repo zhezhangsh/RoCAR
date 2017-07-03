@@ -35,7 +35,7 @@ CreateReport<-function(yml) {
   #################################################################################################################
   
   # Reset working directory
-  wd<-getwd();
+  owd<-getwd();
   setwd(path); 
   yml$output<-path<-getwd(); 
   
@@ -88,7 +88,7 @@ CreateReport<-function(yml) {
     roca.message$noError<-FALSE;
     roca.message$other<-err;
   }, finally = {
-    setwd(wd);
+    setwd(owd);
   }); 
   ###########################################################################################
 
