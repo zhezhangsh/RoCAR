@@ -63,7 +63,10 @@ CreateReport<-function(yml) {
       roca.message$render<-try({
         ###############################################################################################################
         rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index.html", output_dir=getwd(),       ###
-                          quiet=TRUE, envir=new.env());                                                             ###
+                          quiet=TRUE, envir=new.env());       
+        pandoc_self_contained_html('index.html', 'index_alone.html'); 
+        
+        ###
         # rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index_alone.html", output_dir=getwd(), ###
         #                   output_options=list('self_contained'=TRUE), quiet=TRUE, envir=new.env());                 ###
         ###############################################################################################################
