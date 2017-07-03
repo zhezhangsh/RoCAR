@@ -62,10 +62,10 @@ CreateReport<-function(yml) {
     if (roca.message$noError) {
       roca.message$render<-try({
         ###############################################################################################################
-        rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index_alone.html", output_dir=getwd(), ###
-                          output_options=list('self_contained'=TRUE), quiet=TRUE, envir=new.env());                 ###
         rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index.html", output_dir=getwd(),       ###
                           quiet=TRUE, envir=new.env());                                                             ###
+        # rmarkdown::render(fn.tmpl, output_format="html_document", output_file="index_alone.html", output_dir=getwd(), ###
+        #                   output_options=list('self_contained'=TRUE), quiet=TRUE, envir=new.env());                 ###
         ###############################################################################################################
       }, silent=TRUE);
     }
