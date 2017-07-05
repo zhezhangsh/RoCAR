@@ -90,7 +90,6 @@ CreateReport<-function(yml) {
     roca.message$noError<-FALSE;
     roca.message$other<-err;
   }, finally = {
-    if (file.exists('index.html')) pandoc_self_contained_html('index.html', 'index_alone.html'); 
     setwd(owd);
   }); 
   ###########################################################################################
@@ -107,6 +106,12 @@ CreateReport<-function(yml) {
   }
   cat('\n##############################################################################################\n');
   if (length(roca.warning) > 0) sapply(roca.warning, function(w) cat('Extra warning:', w, '\n')); 
+  
+  ###############################################
+  # Create self-contained index file
+  f1 <- paste(yml$output, 'index.html', sep='\t'); 
+  f2 <- paste(yml$output, 'index_alone.html', sep='\t'); 
+  if (file.exists(f1)) pandoc_self_contained_html(f1, f2); 
   
   invisible(list(output=path, message=roca.message)); 
 }
