@@ -109,9 +109,9 @@ CreateReport<-function(yml) {
   
   ###############################################
   # Create self-contained index file
-  f1 <- paste(path, 'index.html', sep='\t'); 
-  f2 <- paste(path, 'index_alone.html', sep='\t'); 
-  pandoc_self_contained_html(f1, f2); 
+  f1 <- paste(path, 'index.html', sep='/'); 
+  f2 <- paste(path, 'index_alone.html', sep='/'); 
+  if (file.exists(f1)) pandoc_self_contained_html(f1, f2); 
   
   invisible(list(output=path, message=roca.message)); 
 }
