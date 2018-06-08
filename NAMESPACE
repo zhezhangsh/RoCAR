@@ -11,4 +11,6 @@ export("ImportR");
 export("ImportTable");
 export("ImportVector");
 export("InstallDependency");
+export("OrderFigure");
+export("OrderTable");
 export("WriteDescription");

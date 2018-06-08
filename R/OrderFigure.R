@@ -6,7 +6,7 @@ OrderFigure <- function(reset=FALSE) {
 }; 
 
 # Automatically generate table order for RoCA reports
-OrderTable <- function(reset==FALSE) {
+OrderTable <- function(reset=FALSE) {
   if (!exists('table.count', -1) | reset==TRUE) table.count <<- 0;
   table.count <<- table.count + 1;
   table.count;
