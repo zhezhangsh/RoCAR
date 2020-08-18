@@ -17,7 +17,7 @@ CreateReport<-function(yml) {
   
   # Output paths
   path<-yml$output;
-  if (dir.exist(path)) try(unlink(path));
+  if (dir.exists(path)) try(unlink(path, recursive = TRUE, force = TRUE));
   GenerateFolder(path); 
   yml$input <- Convert2FullPath(yml$input); # Convert path of input files to full path;
 
